@@ -36,6 +36,7 @@
 		"contextManagement": "Context",
 		"terminal": "Terminal",
 		"slashCommands": "Slash Commands",
+		"hooks": "Hooks",
 		"prompts": "Prompts",
 		"ui": "UI",
 		"experimental": "Experimental",

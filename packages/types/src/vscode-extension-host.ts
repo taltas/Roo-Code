@@ -19,6 +19,7 @@ import type { SerializedCustomToolDefinition } from "./custom-tool.js"
 import type { GitCommit } from "./git.js"
 import type { McpServer } from "./mcp.js"
 import type { ModelRecord, RouterModels } from "./model.js"
+import type { HookConfig, HookEventType, HookWithMetadata } from "./hooks.js"
 
 /**
  * ExtensionMessage
@@ -96,6 +97,9 @@ export interface ExtensionMessage {
 		| "customToolsResult"
 		| "modes"
 		| "taskWithAggregatedCosts"
+		// Hooks messages
+		| "hooks/loaded"
+		| "hooks/error"
 	text?: string
 	payload?: any // eslint-disable-line @typescript-eslint/no-explicit-any
 	checkpointWarning?: {
@@ -192,6 +196,8 @@ export interface ExtensionMessage {
 		childrenCost: number
 	}
 	historyItem?: HistoryItem
+	// Hooks message payloads
+	hooks?: HookWithMetadata[]
 }
 
 export type ExtensionState = Pick<
@@ -528,6 +534,14 @@ export interface WebviewMessage {
 		| "requestModes"
 		| "switchMode"
 		| "debugSetting"
+		// Hooks messages
+		| "hooks/load"
+		| "hooks/save"
+		| "hooks/delete"
+		| "hooks/reorder"
+		| "hooks/move"
+		| "hooks/openFolder"
+		| "hooks/reload"
 	text?: string
 	editedMessageContent?: string
 	tab?: "settings" | "history" | "mcp" | "modes" | "chat" | "marketplace" | "cloud"
@@ -617,6 +631,13 @@ export interface WebviewMessage {
 		codebaseIndexOpenRouterApiKey?: string
 	}
 	updatedSettings?: RooCodeSettings
+	// Hooks message payloads
+	hook?: HookConfig
+	hookId?: string
+	eventType?: HookEventType
+	fromEventType?: HookEventType
+	toEventType?: HookEventType
+	hookIds?: string[]
 }
 
 export const checkoutDiffPayloadSchema = z.object({
